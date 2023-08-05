@@ -1,13 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { KyriosButton } from '@npx-kyrios/ui';
-
-import NxWelcome from './nx-welcome';
+import { Suspense } from 'react';
 
 export function App() {
   return (
     <div>
-      <KyriosButton />
-      <NxWelcome title="client" />
+      <Suspense>
+        <KyriosButton />
+      </Suspense>
     </div>
   );
 }
