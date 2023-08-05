@@ -1,1 +1,1 @@
-export * from './lib/ui';
+export * from './lib/kyrios-button/kyrios-button';
