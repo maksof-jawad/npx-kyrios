@@ -1,0 +1,63 @@
+datasource database {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  token     String   @database.Text
+  expiresIn DateTime
+  user      User     @relation(name: "sessionToUser", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model Roles {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  user        User[]    @relation(name: "userToRole")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  @@map("roles")
+}
+
+model User {
+  id           String         @id @default(cuid())
+  name         String
+  email        String         @unique
+  password     String
+  imageURL     String?        @database.Text
+  roleId       String?
+  OTP          String?
+  session      Session?       @relation(name: "sessionToUser")
+  role         Roles?         @relation(name: "userToRole", fields: [roleId], references: [id], onDelete: Cascade)
+  notification Notification[] @relation(name: "userToNotification")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  deletedAt    DateTime?
+
+  @@map("users")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  text      String
+  read      Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  user      User      @relation(name: "userToNotification", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification")
+}
