@@ -1,16 +1,11 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import express from 'express';
+import cors from 'cors'
 import * as path from 'path';
-
 const app = express();
-
+app.use(cors())
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-app.get('/api', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.send({ message: 'Welcome to server!' });
 });
 
