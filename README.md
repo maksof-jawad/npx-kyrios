@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/maksof-jawad/">
+  <a href="https://github.com/maksof-jawad/npx-kyrios">
     <img src="https://github.com/maksof-jawad/npx-kyrios/blob/main/apps/client/src/assets/logo.png" alt="Logo" width="80" height="80">
  </a>
   <h3 align="center">npx-Kyrios</h3>
