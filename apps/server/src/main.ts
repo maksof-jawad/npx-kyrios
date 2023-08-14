@@ -1,18 +1,22 @@
-import express from 'express';
-import cors from 'cors'
-import * as path from 'path';
-import routes from './app/routes';
-const app = express();
-app.use(cors())
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/api',routes);
+import Fastify, { FastifyServerOptions } from 'fastify';
+import { app } from './app/app';
 
-app.get('/api/health', (req, res) => {
-  res.send({ message: 'Welcome to server!' });
-});
+const host = process.env.HOST ?? '0.0.0.0';
+const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+// Instantiate Fastify with some config
+
+const server = Fastify({logger:false});
+
+// Register your application as a normal plugin.
+server.register(app);
+
+// Start listening.
+server.listen({ port, host }, (err) => {
+  if (err) {
+    server.log.error(err);
+    process.exit(1);
+  } else {
+    console.log(`[server] is listing on http://${host}:${port}`);
+  }
 });
-server.on('error', console.error);
